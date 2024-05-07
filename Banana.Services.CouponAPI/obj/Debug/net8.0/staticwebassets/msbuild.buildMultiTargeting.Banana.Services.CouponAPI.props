@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Banana.Services.CouponAPI.props" />
+</Project>
