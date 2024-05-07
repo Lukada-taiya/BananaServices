@@ -60,5 +60,51 @@ namespace Banana.Services.CouponAPI.Controllers
             }
             return _response;
         }
+        [HttpPost] 
+        public ResponseDto Post(CouponDto couponDto)
+        {
+            try
+            {
+                Coupon coupon = _mapper.Map<Coupon>(couponDto);
+                _context.Coupons.Add(coupon);
+                _context.SaveChanges();
+            }catch(Exception ex)
+            {
+                _response.Message = ex.Message;
+                _response.IsSuccess = false;
+            }
+            return _response;
+        }
+        [HttpPut] 
+        public ResponseDto Put(CouponDto couponDto)
+        {
+            try
+            {
+                Coupon coupon = _mapper.Map<Coupon>(couponDto);
+                _context.Coupons.Update(coupon);
+                _context.SaveChanges();
+            }catch(Exception ex)
+            {
+                _response.Message = ex.Message;
+                _response.IsSuccess = false;
+            }
+            return _response;
+        }
+        [HttpDelete] 
+        public ResponseDto Delete(int id)
+        {
+            try
+            {
+                Coupon coupon = _context.Coupons.First(x => x.CouponId == id);
+                _context.Coupons.Remove(coupon);
+                _context.SaveChanges();
+            }catch(Exception ex)
+            {
+                _response.Message = ex.Message;
+                _response.IsSuccess = false;
+            }
+            return _response;
+        }
+
     }
 }
