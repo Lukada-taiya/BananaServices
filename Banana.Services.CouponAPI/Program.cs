@@ -1,3 +1,5 @@
+using AutoMapper;
+using Banana.Services.CouponAPI;
 using Banana.Services.CouponAPI.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +10,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+var mapperConfig = new MapperConfiguration(mc =>
+{
+    mc.AddProfile(new MappingConfig());
+});
+
+IMapper mapper = mapperConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
