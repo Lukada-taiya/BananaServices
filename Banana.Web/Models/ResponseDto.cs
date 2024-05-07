@@ -1,4 +1,4 @@
-﻿namespace Banana.Services.CouponAPI.Models.Dto
+﻿namespace Banana.Web.Models
 {
     public class ResponseDto
     {

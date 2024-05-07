@@ -1,5 +1,4 @@
-﻿using Banana.Services.CouponAPI.Models.Dto;
-using Banana.Web.Models;
+﻿using Banana.Web.Models;
 using Banana.Web.Service.IService;
 using Newtonsoft.Json;
 using System.Net;

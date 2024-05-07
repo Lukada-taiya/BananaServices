@@ -1,5 +1,4 @@
-﻿using Banana.Services.CouponAPI.Models.Dto;
-using Banana.Web.Models;
+﻿using Banana.Web.Models;
 
 namespace Banana.Web.Service.IService
 {
