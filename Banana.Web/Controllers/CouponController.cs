@@ -37,5 +37,26 @@ namespace Banana.Web.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> CouponDelete(int couponId)
+        {
+            ResponseDto? response = await _couponService.GetCouponAsync(couponId);
+            if (response != null && response.IsSuccess)
+            {
+                CouponDto coupon = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Result));
+                return View(coupon);
+            }
+            return NotFound();
+        }
+        [HttpPost]
+        public async Task<IActionResult> CouponDelete(CouponDto coupon)
+        {
+            ResponseDto? response = await _couponService.DeleteCouponAsync(coupon.CouponId);
+            if (response != null && response.IsSuccess)
+            {
+                RedirectToAction(nameof(CouponIndex));
+            }
+            return View(coupon);
+        }
+
     }
 }
