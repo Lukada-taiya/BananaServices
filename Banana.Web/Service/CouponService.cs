@@ -14,7 +14,7 @@ namespace Banana.Web.Service
             {
                 ApiType = ApiType.POST,
                 Data = couponDto,
-                Url = CouponApiBase+"api/coupon"
+                Url = CouponApiBase+"/api/coupon"
             });
         }
 
