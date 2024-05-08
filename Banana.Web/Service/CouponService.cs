@@ -14,7 +14,7 @@ namespace Banana.Web.Service
             {
                 ApiType = ApiType.POST,
                 Data = couponDto,
-                Url = CouponApiBase+"api/coupon"
+                Url = CouponApiBase+"/api/coupon"
             });
         }
 
@@ -23,7 +23,7 @@ namespace Banana.Web.Service
             return await _service.SendAsync(new RequestDto()
             {
                 ApiType = ApiType.DELETE, 
-                Url = CouponApiBase + "/api/coupon" + id
+                Url = CouponApiBase + "/api/coupon/" + id
             });
         }
 
@@ -50,7 +50,7 @@ namespace Banana.Web.Service
             return await _service.SendAsync(new RequestDto()
             {
                 ApiType = ApiType.GET,
-                Url = CouponApiBase + "/api/coupon/GetByCode"+code
+                Url = CouponApiBase + "/api/coupon/GetByCode/"+code
             });
         }
          

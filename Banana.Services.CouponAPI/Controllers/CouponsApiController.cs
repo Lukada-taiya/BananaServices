@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Banana.Services.CouponAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/coupon")]
     [ApiController]
     public class CouponsApiController(AppDbContext context, IMapper mapper) : ControllerBase
     {
@@ -90,7 +90,8 @@ namespace Banana.Services.CouponAPI.Controllers
             }
             return _response;
         }
-        [HttpDelete] 
+        [HttpDelete]
+        [Route("{id:int}")]
         public ResponseDto Delete(int id)
         {
             try
