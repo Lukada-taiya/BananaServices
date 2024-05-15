@@ -16,6 +16,9 @@ namespace Banana.Web.Controllers
             if(response != null && response.IsSuccess)
             {
                 list = JsonConvert.DeserializeObject<List<CouponDto>>(Convert.ToString(response.Result));
+            }else
+            {
+                TempData["error"] = response?.Message;
             }
             return View(list);
         }
@@ -31,7 +34,11 @@ namespace Banana.Web.Controllers
                 ResponseDto? response = await _couponService.CreateCouponAsync(model);
                 if (response != null && response.IsSuccess)
                 {
+                    TempData["success"] = "Coupon created successfully";
                     RedirectToAction(nameof(CouponIndex));
+                }else
+                {
+                    TempData["error"] = response?.Message;
                 }
             }
             return View(model);
@@ -44,6 +51,9 @@ namespace Banana.Web.Controllers
             {
                 CouponDto coupon = JsonConvert.DeserializeObject<CouponDto>(Convert.ToString(response.Result));
                 return View(coupon);
+            }else
+            {
+                TempData["error"] = response?.Message;
             }
             return NotFound();
         }
@@ -53,7 +63,11 @@ namespace Banana.Web.Controllers
             ResponseDto? response = await _couponService.DeleteCouponAsync(coupon.CouponId);
             if (response != null && response.IsSuccess)
             {
+                TempData["success"] = "Coupon deleted successfully";
                 RedirectToAction(nameof(CouponIndex));
+            }else
+            {
+                TempData["error"] = response?.Message;
             }
             return View(coupon);
         }

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Banana.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+87b14ebc0c00e7d5aa3041282d3ce195075ae48b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+64e02193bd4987816be232c06c085f7e3cba65f2")]
 [assembly: System.Reflection.AssemblyProductAttribute("Banana.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Banana.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Banana.Services.CouponAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cf1b1c9ebdf667613f8c43ba6aef00745cb7686f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+64e02193bd4987816be232c06c085f7e3cba65f2")]
 [assembly: System.Reflection.AssemblyProductAttribute("Banana.Services.CouponAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Banana.Services.CouponAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
