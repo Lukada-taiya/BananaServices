@@ -1,21 +1,54 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Banana.Services.AuthApi.Models.Dto;
+using Banana.Services.AuthApi.Services.IServices;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Banana.Services.AuthApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     [ApiController]
-    public class AuthApiController : ControllerBase
+    public class AuthApiController(IAuthService service) : ControllerBase
     {
-        [HttpPost]
-        public IActionResult Register()
+        private readonly IAuthService _service = service;
+        private readonly ResponseDto _responseDto = new();
+        
+        [HttpPost("register")] 
+        public async Task<IActionResult> Register(RegisterDto dto)
         {
-            return Ok();
+            var res = await _service.Register(dto);
+            if(!res.IsNullOrEmpty())
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = res;
+                return BadRequest(_responseDto);
+            }
+            return Ok(_responseDto);
         }
-        [HttpPost]
-        public IActionResult Login()
+        [HttpPost("login")] 
+        public async Task<IActionResult> Login(LoginRequestDto requestDto)
         {
-            return Ok();
+            var loginRes =await _service.Login(requestDto);
+            if(loginRes.User == null)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = "Username or password is incorrect";
+                return BadRequest(_responseDto);
+            }
+            _responseDto.Result = loginRes;
+            return Ok(_responseDto);
+        }
+        [HttpPost("assignRole")] 
+        public async Task<IActionResult> AssignRole(RegisterDto registerDto)
+        {
+            var assignSuccessful =await _service.AssignRole(registerDto.Email, registerDto.Role.ToUpper());
+            if(!assignSuccessful)
+            {
+                _responseDto.IsSuccess = false;
+                _responseDto.Message = "Unable to assign role to user";
+                return BadRequest(_responseDto);
+            } 
+            return Ok(_responseDto);
         }
     }
 }
