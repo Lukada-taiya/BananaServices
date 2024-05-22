@@ -38,7 +38,8 @@ namespace Banana.Services.AuthApi.Services
             {
                 return new LoginResponseDto() { Token = "", User = null };
             }
-            var token = _generator.GenerateToken(user);
+            var roles = await _userManager.GetRolesAsync(user);
+            var token = _generator.GenerateToken(user, roles);
             return new LoginResponseDto() { Token = token, User = new() {
                 Name = user.Name,
                 Email = user.Email,
