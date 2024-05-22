@@ -2,6 +2,7 @@
 using Banana.Services.CouponAPI.Data;
 using Banana.Services.CouponAPI.Models;
 using Banana.Services.CouponAPI.Models.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace Banana.Services.CouponAPI.Controllers
 {
     [Route("api/coupon")]
     [ApiController]
+    [Authorize]
     public class CouponsApiController(AppDbContext context, IMapper mapper) : ControllerBase
     {
         private readonly AppDbContext _context = context;
@@ -60,7 +62,8 @@ namespace Banana.Services.CouponAPI.Controllers
             }
             return _response;
         }
-        [HttpPost] 
+        [HttpPost]
+        [Authorize(Roles ="ADMIN")]
         public ResponseDto Post(CouponDto couponDto)
         {
             try
@@ -92,6 +95,7 @@ namespace Banana.Services.CouponAPI.Controllers
         }
         [HttpDelete]
         [Route("{id:int}")]
+        [Authorize(Roles ="ADMIN")]
         public ResponseDto Delete(int id)
         {
             try
