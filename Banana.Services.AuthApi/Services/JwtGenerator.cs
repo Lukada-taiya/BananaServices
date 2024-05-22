@@ -11,7 +11,7 @@ namespace Banana.Services.AuthApi.Services
     public class JwtGenerator(IOptions<JwtOptions> jwtOptions) : IJwtGenerator
     {
         private readonly JwtOptions _jwtOptions = jwtOptions.Value;
-        public string GenerateToken(ApplicationUser user)
+        public string GenerateToken(ApplicationUser user, IEnumerable<string> roles)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtOptions.Secret);
@@ -21,6 +21,7 @@ namespace Banana.Services.AuthApi.Services
                 new (JwtRegisteredClaimNames.Sub, user.Id),
                 new (JwtRegisteredClaimNames.Name, user.UserName)
         };
+            claimList.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Audience = _jwtOptions.Audience,
