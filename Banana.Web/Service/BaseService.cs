@@ -7,10 +7,11 @@ using static Banana.Web.Utility.StaticData;
 
 namespace Banana.Web.Service
 {
-    public class BaseService(IHttpClientFactory clientFactory) : IBaseService
+    public class BaseService(IHttpClientFactory clientFactory, ITokenProvider tokenProvider) : IBaseService
     {
         private readonly IHttpClientFactory _httpClientFactory = clientFactory;
-        public async Task<ResponseDto?> SendAsync(RequestDto requestDto)
+        private readonly ITokenProvider _tokenProvider = tokenProvider;
+        public async Task<ResponseDto?> SendAsync(RequestDto requestDto, bool withBearer)
         {
             try
             {
@@ -18,6 +19,11 @@ namespace Banana.Web.Service
                 HttpRequestMessage message = new();
                 message.Headers.Add("Accept", "application/json");
                 //token
+                if(withBearer)
+                {
+                    var token = _tokenProvider.GetToken();
+                    message.Headers.Add("Authorization", $"Bearer {token}");
+                }
                 message.RequestUri = new Uri(requestDto.Url);
                 if (requestDto.Data != null)
                 {

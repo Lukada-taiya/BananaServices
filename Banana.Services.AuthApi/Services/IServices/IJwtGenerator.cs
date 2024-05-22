@@ -4,6 +4,6 @@ namespace Banana.Services.AuthApi.Services.IServices
 {
     public interface IJwtGenerator
     {
-        string GenerateToken(ApplicationUser user);
+        string GenerateToken(ApplicationUser user, IEnumerable<string> roles);
     }
 }

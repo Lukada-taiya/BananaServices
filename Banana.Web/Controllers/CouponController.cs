@@ -22,7 +22,7 @@ namespace Banana.Web.Controllers
             }
             return View(list);
         }
-        public async Task<IActionResult> CouponCreate()
+        public IActionResult CouponCreate()
         { 
             return View();
         }
