@@ -1,6 +1,6 @@
-﻿using Banana.Services.AuthApi.Models;
+﻿using Banana.Services.AuthAPI.Models;
 
-namespace Banana.Services.AuthApi.Services.IServices
+namespace Banana.Services.AuthAPI.Services.IServices
 {
     public interface IJwtGenerator
     {

@@ -1,10 +1,10 @@
-﻿using Banana.Services.AuthApi.Models.Dto;
-using Banana.Services.AuthApi.Services.IServices;
+﻿using Banana.Services.AuthAPI.Models.Dto;
+using Banana.Services.AuthAPI.Services.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Banana.Services.AuthApi.Controllers
+namespace Banana.Services.AuthAPI.Controllers
 {
     [Route("api/auth")]
     [ApiController]

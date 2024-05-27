@@ -1,10 +1,10 @@
-﻿using Banana.Services.AuthApi.Data;
-using Banana.Services.AuthApi.Models;
-using Banana.Services.AuthApi.Models.Dto;
-using Banana.Services.AuthApi.Services.IServices;
+﻿using Banana.Services.AuthAPI.Data;
+using Banana.Services.AuthAPI.Models;
+using Banana.Services.AuthAPI.Models.Dto;
+using Banana.Services.AuthAPI.Services.IServices;
 using Microsoft.AspNetCore.Identity;
 
-namespace Banana.Services.AuthApi.Services
+namespace Banana.Services.AuthAPI.Services
 {
     public class AuthService(AppDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IJwtGenerator generator) : IAuthService
     {

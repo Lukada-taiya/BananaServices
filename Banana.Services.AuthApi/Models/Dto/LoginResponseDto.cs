@@ -1,4 +1,4 @@
-﻿namespace Banana.Services.AuthApi.Models.Dto
+﻿namespace Banana.Services.AuthAPI.Models.Dto
 {
     public class LoginResponseDto
     {

@@ -1,12 +1,12 @@
-﻿using Banana.Services.AuthApi.Models;
-using Banana.Services.AuthApi.Services.IServices;
+﻿using Banana.Services.AuthAPI.Models;
+using Banana.Services.AuthAPI.Services.IServices;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Banana.Services.AuthApi.Services
+namespace Banana.Services.AuthAPI.Services
 {
     public class JwtGenerator(IOptions<JwtOptions> jwtOptions) : IJwtGenerator
     {

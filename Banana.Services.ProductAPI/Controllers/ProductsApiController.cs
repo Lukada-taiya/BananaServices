@@ -1,20 +1,20 @@
 ﻿using AutoMapper;
-using Banana.Services.CouponAPI.Data;
-using Banana.Services.CouponAPI.Models;
 using Banana.Services.CouponAPI.Models.Dto;
+using Banana.Services.ProductAPI.Data;
+using Banana.Services.ProductAPI.Models;
+using Banana.Services.ProductAPI.Models.Dto;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Banana.Services.CouponAPI.Controllers
+namespace Banana.Services.ProductAPI.Controllers
 {
-    [Route("api/coupon")]
+    [Route("api/product")]
     [ApiController]
     [Authorize]
-    public class CouponsApiController(AppDbContext context, IMapper mapper) : ControllerBase
+    public class ProductsApiController(AppDbContext context, IMapper mapper) : ControllerBase
     {
         private readonly AppDbContext _context = context;
-        private readonly ResponseDto _response = new ResponseDto();
+        private readonly ResponseDto _response = new ();
         private readonly IMapper _mapper = mapper;
 
         [HttpGet]
@@ -22,25 +22,27 @@ namespace Banana.Services.CouponAPI.Controllers
         {
             try
             {
-                IEnumerable<Coupon> couponlist = _context.Coupons.ToList();
-                _response.Result = _mapper.Map<IEnumerable<CouponDto>>(couponlist);
-            }catch(Exception ex)
-            { 
+                IEnumerable<Product> productlist = _context.Products.ToList();
+                _response.Result = _mapper.Map<IEnumerable<ProductDto>>(productlist);
+            }
+            catch (Exception ex)
+            {
                 _response.Message = ex.Message;
                 _response.IsSuccess = false;
             }
             return _response;
         }
-        
+
         [HttpGet]
         [Route("{id:int}")]
         public ResponseDto Get(int id)
         {
             try
             {
-                Coupon coupon = _context.Coupons.First(x => x.CouponId == id);
-                _response.Result = _mapper.Map<CouponDto>(coupon);
-            }catch(Exception ex)
+                Product product = _context.Products.First(x => x.ProductId == id);
+                _response.Result = _mapper.Map<ProductDto>(product);
+            }
+            catch (Exception ex)
             {
                 _response.Message = ex.Message;
                 _response.IsSuccess = false;
@@ -48,14 +50,15 @@ namespace Banana.Services.CouponAPI.Controllers
             return _response;
         }
         [HttpGet]
-        [Route("GetByCode{code}")]
-        public ResponseDto GetByCode(string code)
+        [Route("GetByName{name}")]
+        public ResponseDto GetByCode(string name)
         {
             try
             {
-                Coupon coupon = _context.Coupons.First(x => x.CouponCode.ToLower() == code.ToLower());
-                _response.Result = _mapper.Map<CouponDto>(coupon);
-            }catch(Exception ex)
+                Product product = _context.Products.First(x => x.Name.ToLower() == name.ToLower());
+                _response.Result = _mapper.Map<ProductDto>(product);
+            }
+            catch (Exception ex)
             {
                 _response.Message = ex.Message;
                 _response.IsSuccess = false;
@@ -63,31 +66,33 @@ namespace Banana.Services.CouponAPI.Controllers
             return _response;
         }
         [HttpPost]
-        [Authorize(Roles ="ADMIN")]
-        public ResponseDto Post(CouponDto couponDto)
+        [Authorize(Roles = "ADMIN")]
+        public ResponseDto Post(ProductDto productDto)
         {
             try
             {
-                Coupon coupon = _mapper.Map<Coupon>(couponDto);
-                _context.Coupons.Add(coupon);
+                Product product = _mapper.Map<Product>(productDto);
+                _context.Products.Add(product);
                 _context.SaveChanges();
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 _response.Message = ex.Message;
                 _response.IsSuccess = false;
             }
             return _response;
         }
-        [HttpPut] 
-        [Authorize(Roles ="ADMIN")]
-        public ResponseDto Put(CouponDto couponDto)
+        [HttpPut]
+        [Authorize(Roles = "ADMIN")]
+        public ResponseDto Put(ProductDto productDto)
         {
             try
             {
-                Coupon coupon = _mapper.Map<Coupon>(couponDto);
-                _context.Coupons.Update(coupon);
+                Product product = _mapper.Map<Product>(productDto);
+                _context.Products.Update(product);
                 _context.SaveChanges();
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 _response.Message = ex.Message;
                 _response.IsSuccess = false;
@@ -96,21 +101,21 @@ namespace Banana.Services.CouponAPI.Controllers
         }
         [HttpDelete]
         [Route("{id:int}")]
-        [Authorize(Roles ="ADMIN")]
+        [Authorize(Roles = "ADMIN")]
         public ResponseDto Delete(int id)
         {
             try
             {
-                Coupon coupon = _context.Coupons.First(x => x.CouponId == id);
-                _context.Coupons.Remove(coupon);
+                Product product = _context.Products.First(x => x.ProductId == id);
+                _context.Products.Remove(product);
                 _context.SaveChanges();
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 _response.Message = ex.Message;
                 _response.IsSuccess = false;
             }
             return _response;
         }
-
     }
 }

@@ -1,6 +1,6 @@
-﻿using Banana.Services.AuthApi.Models.Dto;
+﻿using Banana.Services.AuthAPI.Models.Dto;
 
-namespace Banana.Services.AuthApi.Services.IServices
+namespace Banana.Services.AuthAPI.Services.IServices
 {
     public interface IAuthService
     {

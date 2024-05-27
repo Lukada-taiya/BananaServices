@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Banana.Services.AuthApi.Models
+namespace Banana.Services.AuthAPI.Models
 {
     public class ApplicationUser : IdentityUser
     {

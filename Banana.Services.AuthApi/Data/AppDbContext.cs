@@ -1,10 +1,10 @@
 ﻿
-using Banana.Services.AuthApi.Models;
+using Banana.Services.AuthAPI.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Banana.Services.AuthApi.Data
+namespace Banana.Services.AuthAPI.Data
 {
     public class AppDbContext : IdentityDbContext<ApplicationUser>
     {
