@@ -1,21 +1,46 @@
 using Banana.Web.Models;
+using Banana.Web.Service.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace Banana.Web.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController(ILogger<HomeController> logger, IProductService productService) : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<HomeController> _logger = logger;
+        private readonly IProductService _productService = productService;
+         
 
-        public HomeController(ILogger<HomeController> logger)
+        public async Task<IActionResult> Index()
         {
-            _logger = logger;
+            List<ProductDto>? list = new();
+            ResponseDto? response = await _productService.GetAllProductsAsync();
+            if (response != null && response.IsSuccess)
+            {
+                list = JsonConvert.DeserializeObject<List<ProductDto>>(Convert.ToString(response.Result));
+            }
+            else
+            {
+                TempData["error"] = response?.Message;
+            }
+            return View(list);
         }
-
-        public IActionResult Index()
+        [Authorize]
+         public async Task<IActionResult> ProductDetails(int productId)
         {
-            return View();
+            ProductDto product = new();
+            ResponseDto? response = await _productService.GetProductAsync(productId);
+            if (response != null && response.IsSuccess)
+            {
+                product = JsonConvert.DeserializeObject<ProductDto>(Convert.ToString(response.Result));
+            }
+            else
+            {
+                TempData["error"] = response?.Message;
+            }
+            return View(product);
         }
 
         public IActionResult Privacy()
