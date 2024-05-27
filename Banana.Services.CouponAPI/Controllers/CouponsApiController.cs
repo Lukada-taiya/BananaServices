@@ -79,6 +79,7 @@ namespace Banana.Services.CouponAPI.Controllers
             return _response;
         }
         [HttpPut] 
+        [Authorize(Roles ="ADMIN")]
         public ResponseDto Put(CouponDto couponDto)
         {
             try
