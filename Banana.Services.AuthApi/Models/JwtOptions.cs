@@ -1,4 +1,4 @@
-﻿namespace Banana.Services.AuthApi.Models
+﻿namespace Banana.Services.AuthAPI.Models
 {
     public class JwtOptions
     {

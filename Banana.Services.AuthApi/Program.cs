@@ -1,7 +1,7 @@
-using Banana.Services.AuthApi.Data;
-using Banana.Services.AuthApi.Models;
-using Banana.Services.AuthApi.Services;
-using Banana.Services.AuthApi.Services.IServices;
+using Banana.Services.AuthAPI.Data;
+using Banana.Services.AuthAPI.Models;
+using Banana.Services.AuthAPI.Services;
+using Banana.Services.AuthAPI.Services.IServices;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

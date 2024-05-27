@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Banana.Services.AuthApi.Migrations
+namespace Banana.Services.AuthAPI.Migrations
 {
     /// <inheritdoc />
     public partial class InitialMigration : Migration
