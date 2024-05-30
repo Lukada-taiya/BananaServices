@@ -59,3 +59,9 @@ Banana.Web/bin/
 /Banana.Web/obj/Banana.Web.csproj.nuget.dgspec.json
 /Banana.Web/obj/Debug/net8.0/Banana.Web.pdb
 /Banana.Web/obj/project.nuget.cache
+/Banana.Services.ShoppingCartAPI/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+/Banana.Services.ShoppingCartAPI/obj/Debug/net8.0/Banana.Services.ShoppingCartAPI.AssemblyInfo.cs
+/Banana.Services.ShoppingCartAPI/obj/Debug/net8.0/Banana.Services.ShoppingCartAPI.csproj.FileListAbsolute.txt
+*.g.cs
+/Banana.Services.ShoppingCartAPI/obj/Debug/net8.0/Banana.Services.ShoppingCartAPI.MvcApplicationPartsAssemblyInfo.cs
+/Banana.Services.CouponAPI/obj/Debug/net8.0/Banana.Services.CouponAPI.csproj.FileListAbsolute.txt
