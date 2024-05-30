@@ -64,3 +64,4 @@ Banana.Web/bin/
 /Banana.Services.ShoppingCartAPI/obj/Debug/net8.0/Banana.Services.ShoppingCartAPI.csproj.FileListAbsolute.txt
 *.g.cs
 /Banana.Services.ShoppingCartAPI/obj/Debug/net8.0/Banana.Services.ShoppingCartAPI.MvcApplicationPartsAssemblyInfo.cs
+/Banana.Services.CouponAPI/obj/Debug/net8.0/Banana.Services.CouponAPI.csproj.FileListAbsolute.txt
