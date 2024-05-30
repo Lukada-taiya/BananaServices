@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Banana.Services.AuthAPI", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banana.Services.ProductAPI", "Banana.Services.ProductAPI\Banana.Services.ProductAPI.csproj", "{02D0BC5C-B89C-4DCC-9D42-E7F2F79BBC1E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Banana.Services.ShoppingCartAPI", "Banana.Services.ShoppingCartAPI\Banana.Services.ShoppingCartAPI.csproj", "{59ED2589-FB5A-4C61-8E6F-67B1FAA6CDC0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{02D0BC5C-B89C-4DCC-9D42-E7F2F79BBC1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02D0BC5C-B89C-4DCC-9D42-E7F2F79BBC1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02D0BC5C-B89C-4DCC-9D42-E7F2F79BBC1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59ED2589-FB5A-4C61-8E6F-67B1FAA6CDC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59ED2589-FB5A-4C61-8E6F-67B1FAA6CDC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59ED2589-FB5A-4C61-8E6F-67B1FAA6CDC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59ED2589-FB5A-4C61-8E6F-67B1FAA6CDC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +56,7 @@ Global
 		{2CA0069A-DB25-4018-B802-10D849C5A77B} = {8AEA00F0-A820-4CEC-8D03-F7B46B531094}
 		{5B1C64CE-C7E0-4F4D-8C7F-4433268FADBB} = {DA943B59-4223-4C12-BF00-085417A35243}
 		{02D0BC5C-B89C-4DCC-9D42-E7F2F79BBC1E} = {DA943B59-4223-4C12-BF00-085417A35243}
+		{59ED2589-FB5A-4C61-8E6F-67B1FAA6CDC0} = {DA943B59-4223-4C12-BF00-085417A35243}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {154C5B18-9351-4741-8113-6073B54C3172}
