@@ -11,14 +11,15 @@ namespace Banana.Services.ShoppingCartAPI.Controllers
 {
     [Route("api/cart")]
     [ApiController]
-    public class CartsController(IMapper mapper, AppDbContext context, IProductService productService) : ControllerBase
+    public class CartsController(IMapper mapper, AppDbContext context, IProductService productService, ICouponService couponService) : ControllerBase
     {
         private readonly IMapper _mapper = mapper;
         private readonly AppDbContext _appDbContext = context;
         private readonly IProductService _productService = productService;
+        private readonly ICouponService _couponService = couponService;
         private ResponseDto _responseDto = new();
 
-        [HttpPost("GetCart/{userId}")]
+        [HttpGet("GetCart/{userId}")]
         public async Task<ResponseDto> Get(string userId)
         {
             try
@@ -32,8 +33,17 @@ namespace Banana.Services.ShoppingCartAPI.Controllers
                 cartDto.CartDetailsList = _mapper.Map<IEnumerable<CartDetailsDto>>(_appDbContext.CartDetails.Where(u => u.CartHeaderId == cartHeader.CartHeaderId));
                 foreach (var item in cartDto.CartDetailsList)
                 {
-                    item.ProductDto = products.FirstOrDefault(u => u.ProductId == item.ProductId);
+                    item.ProductDto = products.First(u => u.ProductId == item.ProductId);
                     cartDto.CartHeader.CartTotal += item.ProductDto.Price * item.Count;
+                }
+                if(!string.IsNullOrEmpty(cartDto.CartHeader.CouponCode))
+                {
+                    CouponDto coupon = await _couponService.GetCoupon(cartDto.CartHeader.CouponCode);
+                    if(coupon != null && cartDto.CartHeader.CartTotal > coupon.MinAmount)
+                    {
+                        cartDto.CartHeader.CartTotal -= coupon.DiscountAmount;
+                        cartDto.CartHeader.Discount = coupon.DiscountAmount;
+                    }
                 }
                 _responseDto.Result = cartDto;
             }catch(Exception e)
@@ -43,6 +53,42 @@ namespace Banana.Services.ShoppingCartAPI.Controllers
             }
             return _responseDto;
         }
+
+        [HttpPost("ApplyCoupon")]
+        public async Task<ResponseDto> ApplyCoupon(CartDto cart)
+        {
+            try
+            {
+                var cartHeaderFromDb = await _appDbContext.CartHeaders.AsNoTracking().FirstAsync(u => u.UserId == cart.CartHeader.UserId);
+                cartHeaderFromDb.CouponCode = cart.CartHeader.CouponCode;
+                _appDbContext.CartHeaders.Update(cartHeaderFromDb);
+                await _appDbContext.SaveChangesAsync();                
+                _responseDto.Result = true;
+            }catch(Exception e)
+            {
+                _responseDto.Message = e.Message;
+                _responseDto.IsSuccess = false;
+            }
+            return _responseDto;
+        }
+        //Combining removecoupon to apply coupon
+        //[HttpPost("RemoveCoupon")]
+        //public async Task<ResponseDto> RemoveCoupon(CartDto cart)
+        //{
+        //    try
+        //    {
+        //        var cartHeaderFromDb = await _appDbContext.CartHeaders.AsNoTracking().FirstAsync(u => u.UserId == cart.CartHeader.UserId);
+        //        cartHeaderFromDb.CouponCode = "";
+        //        _appDbContext.CartHeaders.Update(cartHeaderFromDb);
+        //        await _appDbContext.SaveChangesAsync();                
+        //        _responseDto.Result = true;
+        //    }catch(Exception e)
+        //    {
+        //        _responseDto.Message = e.Message;
+        //        _responseDto.IsSuccess = false;
+        //    }
+        //    return _responseDto;
+        //}
 
         [HttpPost("CartInsert")]
         public async Task<ResponseDto> Insert(CartDto cart)

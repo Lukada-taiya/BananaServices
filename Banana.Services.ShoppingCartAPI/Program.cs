@@ -4,6 +4,7 @@ using Banana.Services.ShoppingCartAPI.Data;
 using Banana.Services.ShoppingCartAPI.Extensions;
 using Banana.Services.ShoppingCartAPI.Services;
 using Banana.Services.ShoppingCartAPI.Services.IService;
+using Banana.Services.ShoppingCartAPI.Utility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -19,12 +20,15 @@ var mapperConfig = new MapperConfiguration(mc =>
 {
     mc.AddProfile(new MappingConfig());
 });
-
-builder.Services.AddHttpClient("Products", u => u.BaseAddress = new Uri(builder.Configuration["ServiceUrls:Product"]));
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<BackendApiAuthTokenHandler>();
+builder.Services.AddHttpClient("Products", u => u.BaseAddress = new Uri(builder.Configuration["ServiceUrls:Product"])).AddHttpMessageHandler<BackendApiAuthTokenHandler>();
+builder.Services.AddHttpClient("Coupons", u => u.BaseAddress = new Uri(builder.Configuration["ServiceUrls:Coupon"])).AddHttpMessageHandler<BackendApiAuthTokenHandler>();
 
 IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICouponService, CouponService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
