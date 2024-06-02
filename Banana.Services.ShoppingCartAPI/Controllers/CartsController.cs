@@ -44,6 +44,41 @@ namespace Banana.Services.ShoppingCartAPI.Controllers
             return _responseDto;
         }
 
+        [HttpPost("ApplyCoupon")]
+        public async Task<ResponseDto> ApplyCoupon(CartDto cart)
+        {
+            try
+            {
+                var cartHeaderFromDb = await _appDbContext.CartHeaders.AsNoTracking().FirstAsync(u => u.UserId == cart.CartHeader.UserId);
+                cartHeaderFromDb.CouponCode = cart.CartHeader.CouponCode;
+                _appDbContext.CartHeaders.Update(cartHeaderFromDb);
+                await _appDbContext.SaveChangesAsync();                
+                _responseDto.Result = true;
+            }catch(Exception e)
+            {
+                _responseDto.Message = e.Message;
+                _responseDto.IsSuccess = false;
+            }
+            return _responseDto;
+        }
+        [HttpPost("RemoveCoupon")]
+        public async Task<ResponseDto> RemoveCoupon(CartDto cart)
+        {
+            try
+            {
+                var cartHeaderFromDb = await _appDbContext.CartHeaders.AsNoTracking().FirstAsync(u => u.UserId == cart.CartHeader.UserId);
+                cartHeaderFromDb.CouponCode = "";
+                _appDbContext.CartHeaders.Update(cartHeaderFromDb);
+                await _appDbContext.SaveChangesAsync();                
+                _responseDto.Result = true;
+            }catch(Exception e)
+            {
+                _responseDto.Message = e.Message;
+                _responseDto.IsSuccess = false;
+            }
+            return _responseDto;
+        }
+
         [HttpPost("CartInsert")]
         public async Task<ResponseDto> Insert(CartDto cart)
         {
