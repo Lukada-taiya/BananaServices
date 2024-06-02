@@ -48,7 +48,7 @@ namespace Banana.Services.CouponAPI.Controllers
             return _response;
         }
         [HttpGet]
-        [Route("GetByCode{code}")]
+        [Route("GetByCode/{code}")]
         public ResponseDto GetByCode(string code)
         {
             try
