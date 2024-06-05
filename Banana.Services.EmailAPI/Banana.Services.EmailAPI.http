@@ -1,0 +1,6 @@
+@Banana.Services.EmailAPI_HostAddress = http://localhost:5210
+
+GET {{Banana.Services.EmailAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
