@@ -38,6 +38,21 @@ namespace Banana.Web.Controllers
             
             return View();
         }
+        public async Task<IActionResult> EmailCart(CartDto cartDto)
+        {
+            var cart = await GetCartOfLoggedInUser();
+            var email = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Email).FirstOrDefault()?.Value;
+            cart.CartHeader.Email = email;
+            ResponseDto response = await _cartService.EmailCart(cart);
+           
+            if (response != null && response.IsSuccess)
+            {
+                TempData["success"] = "Message will be processed and sent shortly";
+            }else
+            TempData["error"] = "An error occured. Try again later";
+            return RedirectToAction(nameof(CartIndex));
+             
+        }
         public async Task<IActionResult> RemoveCoupon(CartDto cartDto)
         {
             cartDto.CartHeader.CouponCode = "";

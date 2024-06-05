@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Banana.MessageBus;
 using Banana.Services.ShoppingCartAPI.Data;
 using Banana.Services.ShoppingCartAPI.Models;
 using Banana.Services.ShoppingCartAPI.Models.Dto;
@@ -11,12 +12,14 @@ namespace Banana.Services.ShoppingCartAPI.Controllers
 {
     [Route("api/cart")]
     [ApiController]
-    public class CartsController(IMapper mapper, AppDbContext context, IProductService productService, ICouponService couponService) : ControllerBase
+    public class CartsController(IMapper mapper, AppDbContext context, IProductService productService, ICouponService couponService, IMessageBus messageBus, IConfiguration configuration) : ControllerBase
     {
         private readonly IMapper _mapper = mapper;
         private readonly AppDbContext _appDbContext = context;
         private readonly IProductService _productService = productService;
         private readonly ICouponService _couponService = couponService;
+        private readonly IConfiguration _configuration = configuration;
+        private readonly IMessageBus _messageBus = messageBus;
         private ResponseDto _responseDto = new();
 
         [HttpGet("GetCart/{userId}")]
@@ -65,6 +68,22 @@ namespace Banana.Services.ShoppingCartAPI.Controllers
                 await _appDbContext.SaveChangesAsync();                
                 _responseDto.Result = true;
             }catch(Exception e)
+            {
+                _responseDto.Message = e.Message;
+                _responseDto.IsSuccess = false;
+            }
+            return _responseDto;
+        }
+
+        [HttpPost("EmailCart")]
+        public async Task<ResponseDto> EmailCart(CartDto cart)
+        {
+            try
+            {
+                await _messageBus.Publish(cart,_configuration.GetValue<string>("TopicsAndQueueNames:EmailShoppingCartQueue"));                
+                _responseDto.Result = true;
+            }
+            catch (Exception e)
             {
                 _responseDto.Message = e.Message;
                 _responseDto.IsSuccess = false;
