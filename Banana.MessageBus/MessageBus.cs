@@ -6,8 +6,8 @@ using System.Text;
 namespace Banana.MessageBus
 {
     public class MessageBus : IMessageBus
-    {
-        private readonly string connectionString = "--Add Azure Service Bus";
+    { 
+        private readonly string connectionString = "--Add Azure Service Bus Key"; 
         public async Task Publish(object message, string topic_queue_name)
         {
             await using var client = new ServiceBusClient(connectionString);
