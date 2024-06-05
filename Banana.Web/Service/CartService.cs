@@ -26,6 +26,15 @@ namespace Banana.Web.Service
                 Url = ShoppingCartApiBase + "/api/cart/ApplyCoupon"
             });
         }
+        public async Task<ResponseDto> EmailCart(CartDto cartDto)
+        {
+            return await _baseService.SendAsync(new RequestDto()
+            {
+                ApiType = ApiType.POST,
+                Data = cartDto,
+                Url = ShoppingCartApiBase + "/api/cart/EmailCart"
+            });
+        }
 
         public async Task<ResponseDto> GetCartByUserId(string userId)
         {

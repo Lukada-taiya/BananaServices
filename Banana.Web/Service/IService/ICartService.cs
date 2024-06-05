@@ -8,5 +8,6 @@ namespace Banana.Web.Service.IService
         Task<ResponseDto> AddToCart(CartDto cartDto);
         Task<ResponseDto> RemoveFromCart(int cardDetailsId);
         Task<ResponseDto> ApplyCoupon(CartDto cartDto);
+        Task<ResponseDto> EmailCart(CartDto cartDto);
     }
 }
