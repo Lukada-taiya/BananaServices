@@ -69,3 +69,7 @@ Banana.Web/bin/
 /Banana.Services.EmailAPI/obj/Debug/net8.0/Banana.Services.EmailAPI.csproj.FileListAbsolute.txt
 /Banana.Services.EmailAPI/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
 /Banana.Services.EmailAPI/obj/Debug/net8.0/Banana.Services.EmailAPI.MvcApplicationPartsAssemblyInfo.cs
+/Banana.Services.CouponAPI/obj/Debug/net8.0/project.razor.vs.bin
+/Banana.MessageBus/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+/Banana.MessageBus/obj/Debug/net8.0/Banana.MessageBus.AssemblyInfo.cs
+/Banana.MessageBus/obj/Debug/net8.0/Banana.MessageBus.csproj.FileListAbsolute.txt
