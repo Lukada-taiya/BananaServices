@@ -1,4 +1,5 @@
 using AutoMapper;
+using Banana.MessageBus;
 using Banana.Services.ShoppingCartAPI;
 using Banana.Services.ShoppingCartAPI.Data;
 using Banana.Services.ShoppingCartAPI.Extensions;
@@ -29,6 +30,7 @@ IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
+builder.Services.AddScoped<IMessageBus, MessageBus>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
