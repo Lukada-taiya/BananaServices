@@ -8,6 +8,6 @@ namespace Banana.MessageBus
 {
     public interface IMessageBus
     {
-        Task Publish(object  message, string topic_queue_name);
+        Task Publish(object  message, string topic_queue_name, string connection_string);
     }
 }

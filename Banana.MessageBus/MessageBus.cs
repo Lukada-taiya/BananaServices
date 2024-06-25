@@ -7,10 +7,9 @@ namespace Banana.MessageBus
 {
     public class MessageBus : IMessageBus
     { 
-        private readonly string connectionString = "--Add Azure Service Bus Key"; 
-        public async Task Publish(object message, string topic_queue_name)
+        public async Task Publish(object message, string topic_queue_name, string connection_string)
         {
-            await using var client = new ServiceBusClient(connectionString);
+            await using var client = new ServiceBusClient(connection_string);
 
             ServiceBusSender sender = client.CreateSender(topic_queue_name);
             var serializedmessage = JsonConvert.SerializeObject(message);
