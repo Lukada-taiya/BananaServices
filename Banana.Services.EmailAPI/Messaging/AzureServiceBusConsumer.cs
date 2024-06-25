@@ -14,17 +14,22 @@ namespace Banana.Services.EmailAPI.Messaging
         public AzureServiceBusConsumer(IConfiguration configuration)
         {
             _configuration = configuration;
-            serviceBusConnectionString = configuration.GetValue<string>("ServiceBusConnectionString");
-            emailCartQueue = configuration.GetValue<string>("TopicsAndQueueNames:EmailShoppingCartQueue");
+            serviceBusConnectionString = _configuration.GetValue<string>("ServiceBusConnectionString");
+            emailCartQueue = _configuration.GetValue<string>("TopicsAndQueueNames:EmailShoppingCartQueue");
             var client = new ServiceBusClient(serviceBusConnectionString);
             _serviceBusProcessor = client.CreateProcessor(emailCartQueue); 
         }
 
-        public async Task Start()
+        public async Task Start() 
         {
             _serviceBusProcessor.ProcessMessageAsync += OnEmailCartRequestReceived;
             _serviceBusProcessor.ProcessErrorAsync += ErrorHandler;
             await _serviceBusProcessor.StartProcessingAsync();
+        }
+        public async Task Stop()
+        {
+            await _serviceBusProcessor.StopProcessingAsync();
+            await _serviceBusProcessor.DisposeAsync();
         }
 
         private async Task OnEmailCartRequestReceived(ProcessMessageEventArgs args)
@@ -43,14 +48,10 @@ namespace Banana.Services.EmailAPI.Messaging
 
         private Task ErrorHandler(ProcessErrorEventArgs args)
         {
+            //Possible send email own email for debugging
             Console.WriteLine(args.Exception.ToString());
             return Task.CompletedTask;
         }
 
-        public async Task Stop()
-        {
-            await _serviceBusProcessor.StopProcessingAsync();
-            await _serviceBusProcessor.DisposeAsync();
-        }
     }
 }
