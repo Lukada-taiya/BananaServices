@@ -4,7 +4,7 @@ namespace Banana.Services.EmailAPI.Extensions
 {
     public static class ApplicationBuilderExtension
     {
-        private static IAzureServiceBusConsumer _consumer;
+        private static IAzureServiceBusConsumer _consumer { get; set; }
         public static IApplicationBuilder UseAzureServiceConsumer(this IApplicationBuilder app)
         {
             _consumer = app.ApplicationServices.GetService<IAzureServiceBusConsumer>();
