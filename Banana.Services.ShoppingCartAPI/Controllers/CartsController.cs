@@ -80,7 +80,7 @@ namespace Banana.Services.ShoppingCartAPI.Controllers
         {
             try
             {
-                await _messageBus.Publish(cart,_configuration.GetValue<string>("TopicsAndQueueNames:EmailShoppingCartQueue"));                
+                await _messageBus.Publish(cart,_configuration.GetValue<string>("TopicsAndQueueNames:EmailShoppingCartQueue"), _configuration.GetValue<string>("MessageBusConnString"));                
                 _responseDto.Result = true;
             }
             catch (Exception e)
