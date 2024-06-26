@@ -1,16 +1,20 @@
-﻿using Banana.Services.AuthAPI.Models.Dto;
+﻿using Banana.MessageBus;
+using Banana.Services.AuthAPI.Models.Dto;
 using Banana.Services.AuthAPI.Services.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Banana.Services.AuthAPI.Controllers
 {
     [Route("api/auth")]
     [ApiController]
-    public class AuthApiController(IAuthService service) : ControllerBase
+    public class AuthApiController(IAuthService service, IMessageBus messageBus, IConfiguration configuration) : ControllerBase
     {
         private readonly IAuthService _service = service;
+        private readonly IMessageBus _messageBus = messageBus;
+        private readonly IConfiguration _configuration = configuration;
         private readonly ResponseDto _responseDto = new();
         
         [HttpPost("register")] 
@@ -23,6 +27,7 @@ namespace Banana.Services.AuthAPI.Controllers
                 _responseDto.Message = res;
                 return BadRequest(_responseDto);
             }
+            await _messageBus.Publish(dto.Email, _configuration.GetValue<string>("TopicsAndQueueNames:UserEmailLogQueue"), _configuration.GetValue<string>("MessageBusConnString"));
             return Ok(_responseDto);
         }
         [HttpPost("login")] 

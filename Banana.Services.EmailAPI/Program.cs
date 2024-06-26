@@ -1,6 +1,7 @@
 using Banana.Services.EmailAPI.Data;
 using Banana.Services.EmailAPI.Extensions;
 using Banana.Services.EmailAPI.Messaging;
+using Banana.Services.EmailAPI.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 builder.Services.AddSingleton<IAzureServiceBusConsumer, AzureServiceBusConsumer>();
 builder.Services.AddControllers();
+
+var optionBuilder = new DbContextOptionsBuilder<AppDbContext>();
+optionBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+builder.Services.AddSingleton(new EmailService(optionBuilder.Options));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
