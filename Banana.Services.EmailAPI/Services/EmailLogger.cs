@@ -1,4 +1,4 @@
-﻿namespace Banana.Services.EmailAPI.Models
+﻿namespace Banana.Services.EmailAPI.Services
 {
     public class EmailLogger
     {

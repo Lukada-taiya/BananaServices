@@ -1,4 +1,4 @@
-﻿using Banana.Services.EmailAPI.Models;
+﻿using Banana.Services.EmailAPI.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Banana.Services.EmailAPI.Data
