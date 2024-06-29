@@ -1,0 +1,6 @@
+@Banana.Services.OrderAPI_HostAddress = http://localhost:5207
+
+GET {{Banana.Services.OrderAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
