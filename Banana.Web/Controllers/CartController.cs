@@ -1,5 +1,6 @@
 ﻿using Banana.Web.Models;
 using Banana.Web.Service.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,7 +10,14 @@ namespace Banana.Web.Controllers
     public class CartController(ICartService cart) : Controller
     {
         private readonly ICartService _cartService = cart;
+
+        [Authorize]
         public async Task<IActionResult> CartIndex()
+        {
+            return View(await GetCartOfLoggedInUser());
+        }
+        [Authorize]
+        public async Task<IActionResult> Checkout()
         {
             return View(await GetCartOfLoggedInUser());
         }
