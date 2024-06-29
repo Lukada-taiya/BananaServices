@@ -73,3 +73,5 @@ Banana.Web/bin/
 /Banana.MessageBus/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
 /Banana.MessageBus/obj/Debug/net8.0/Banana.MessageBus.AssemblyInfo.cs
 /Banana.MessageBus/obj/Debug/net8.0/Banana.MessageBus.csproj.FileListAbsolute.txt
+/Banana.Services.OrderAPI/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+/Banana.Services.OrderAPI/obj/Debug/net8.0/Banana.Services.OrderAPI.AssemblyInfo.cs
