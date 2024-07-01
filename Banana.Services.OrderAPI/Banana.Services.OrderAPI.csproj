@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\Banana.MessageBus\Banana.MessageBus.csproj" />
   </ItemGroup>
 
 </Project>
