@@ -1,4 +1,4 @@
-﻿namespace Banana.Web.Models.Dto
+﻿namespace Banana.Web.Models
 {
     public class UserDto
     {

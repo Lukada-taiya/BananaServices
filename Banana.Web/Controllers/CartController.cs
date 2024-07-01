@@ -7,9 +7,10 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace Banana.Web.Controllers
 {
-    public class CartController(ICartService cart) : Controller
+    public class CartController(ICartService cart, IOrderService order) : Controller
     {
         private readonly ICartService _cartService = cart;
+        private readonly IOrderService _orderService = order;
 
         [Authorize]
         public async Task<IActionResult> CartIndex()
@@ -20,6 +21,24 @@ namespace Banana.Web.Controllers
         public async Task<IActionResult> Checkout()
         {
             return View(await GetCartOfLoggedInUser());
+        }
+        [Authorize]
+        [HttpPost] 
+        public async Task<IActionResult> Checkout(CartDto cartDto)
+        { 
+            CartDto cart = await GetCartOfLoggedInUser();
+            cart.CartHeader.Email = cartDto.CartHeader.Email;
+            cart.CartHeader.Phone = cartDto.CartHeader.Phone;
+            cart.CartHeader.Name = cartDto.CartHeader.Name;
+
+            var res = await _orderService.CreateOrderAsync(cart);
+
+            OrderHeaderDto order = JsonConvert.DeserializeObject<OrderHeaderDto>(Convert.ToString(res.Result)); 
+            if(res != null && res.IsSuccess)
+            {
+                //get stripe session
+            }
+            return View(cart);
         }
         public async Task<IActionResult> Remove(int CartDetailsId)
         {

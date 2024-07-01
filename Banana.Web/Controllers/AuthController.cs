@@ -1,4 +1,4 @@
-﻿using Banana.Web.Models.Dto;
+﻿using Banana.Web.Models;
 using Banana.Web.Service.IService;
 using Banana.Web.Utility;
 using Microsoft.AspNetCore.Authentication;
