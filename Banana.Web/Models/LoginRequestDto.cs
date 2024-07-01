@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Banana.Web.Models.Dto
+namespace Banana.Web.Models
 {
     public class LoginRequestDto
     {
