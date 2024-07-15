@@ -7,9 +7,9 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace Banana.Web.Controllers
 {
-    public class CartController(ICartService cart, IOrderService order) : Controller
+    public class CartController(ICartService cartService, IOrderService order) : Controller
     {
-        private readonly ICartService _cartService = cart;
+        private readonly ICartService _cartService = cartService;
         private readonly IOrderService _orderService = order;
 
         [Authorize]
