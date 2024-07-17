@@ -3,6 +3,7 @@ using Banana.Services.OrderAPI.Data;
 using Banana.Services.OrderAPI.Models;
 using Banana.Services.OrderAPI.Models.Dtos;
 using Banana.Services.OrderAPI.Services.IService;
+using Banana.Services.OrderAPI.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,37 +14,38 @@ namespace Banana.Services.OrderAPI.Controllers
     [ApiController]
     public class OrderApiController : ControllerBase
     {
+        private readonly AppDbContext _context;
         private readonly IMapper _mapper;
-        private readonly AppDbContext _appDbContext;
         private readonly IProductService _productService;
-        private ResponseDto _responseDto;
+        protected ResponseDto _responseDto;
 
-        public OrderApiController(IMapper mapper, AppDbContext context, IProductService productService)
+        public OrderApiController(AppDbContext context, IMapper mapper, IProductService productService)
         {
-            _mapper = mapper;
-            _appDbContext = context;
+            _context = context;
+           _mapper = mapper;
             _productService = productService;
             _responseDto = new();
-        }
+    }
 
         [Authorize]
-        [HttpPost]
-        public async Task<ResponseDto> CreateOrder(CartDto cart)
+        [HttpPost("CreateOrder")]
+        public async Task<ResponseDto> CreateOrder([FromBody]CartDto cart)
         {
             try
             {
                 OrderHeaderDto orderHeader = _mapper.Map<OrderHeaderDto>(cart.CartHeader);
                 orderHeader.OrderTime = DateTime.Now;
+                orderHeader.Status = SD.Status_Pending;
                 orderHeader.OrderDetails = _mapper.Map<IEnumerable<OrderDetailsDto>>(cart.CartDetailsList);
-                OrderHeader orderCreated = _appDbContext.OrderHeaders.Add(_mapper.Map<OrderHeader>(orderHeader)).Entity;
-                await _appDbContext.SaveChangesAsync();
 
+                OrderHeader orderCreated = (await _context.AddAsync(_mapper.Map<OrderHeader>(orderHeader))).Entity;
+                await _context.SaveChangesAsync();
                 orderHeader.OrderHeaderId = orderCreated.OrderHeaderId;
                 _responseDto.Result = orderHeader;
-            }catch(Exception e)
+            }catch(Exception ex)
             {
                 _responseDto.IsSuccess = false;
-                _responseDto.Message = e.Message;
+                _responseDto.Message = ex.Message;
             }
             return _responseDto;
         }
