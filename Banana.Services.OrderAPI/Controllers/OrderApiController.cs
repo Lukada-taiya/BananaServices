@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure;
 using Banana.Services.OrderAPI.Data;
 using Banana.Services.OrderAPI.Models;
 using Banana.Services.OrderAPI.Models.Dtos;
@@ -7,6 +8,11 @@ using Banana.Services.OrderAPI.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Stripe; 
+using Stripe.Checkout;
+using Session = Stripe.Checkout.Session;
+using SessionCreateOptions = Stripe.Checkout.SessionCreateOptions;
+using SessionService = Stripe.Checkout.SessionService;
 
 namespace Banana.Services.OrderAPI.Controllers
 {
@@ -72,7 +78,7 @@ namespace Banana.Services.OrderAPI.Controllers
                 new SessionDiscountOptions
                 {
                     Coupon = stripeRequestDto.OrderHeader.CouponCode
-    }
+                }
             }; 
 
                 foreach(var item in stripeRequestDto.OrderHeader.OrderDetails)
