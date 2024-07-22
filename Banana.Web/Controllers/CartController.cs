@@ -1,5 +1,6 @@
 ﻿using Banana.Web.Models;
 using Banana.Web.Service.IService;
+using Banana.Web.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -7,10 +8,10 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace Banana.Web.Controllers
 {
-    public class CartController(ICartService cartService, IOrderService order) : Controller
+    public class CartController(ICartService cartService, IOrderService orderService) : Controller
     {
         private readonly ICartService _cartService = cartService;
-        private readonly IOrderService _orderService = order;
+        private readonly IOrderService _orderService = orderService;
 
         [Authorize]
         public async Task<IActionResult> CartIndex()
@@ -22,6 +23,21 @@ namespace Banana.Web.Controllers
         {
             return View(await GetCartOfLoggedInUser());
         }
+
+        [Authorize]
+        public async Task<IActionResult> Confirmation(int orderId)
+        {
+            ResponseDto response = await _orderService.ValidateStripeSession(orderId);
+
+            OrderHeaderDto order = JsonConvert.DeserializeObject<OrderHeaderDto>(Convert.ToString(response.Result));
+            if(order.Status == StaticData.Status_Approved)
+            {
+                return View(orderId);
+            }
+            //later redirect to an error page
+            return View(orderId);
+        }
+
         [Authorize]
         [HttpPost] 
         public async Task<IActionResult> Checkout(CartDto cartDto)
@@ -30,10 +46,9 @@ namespace Banana.Web.Controllers
             cart.CartHeader.Email = cartDto.CartHeader.Email;
             cart.CartHeader.Phone = cartDto.CartHeader.Phone;
             cart.CartHeader.Name = cartDto.CartHeader.Name;
-
-            var res = await _orderService.CreateOrderAsync(cart);
-
-            OrderHeaderDto order = JsonConvert.DeserializeObject<OrderHeaderDto>(Convert.ToString(res.Result)); 
+             
+            var res = await _orderService.CreateOrderAsync(cart);  
+            OrderHeaderDto order = JsonConvert.DeserializeObject<OrderHeaderDto>(Convert.ToString(res.Result));
             if (res != null && res.IsSuccess)
             {
                 var domain = Request.Scheme + "://" + Request.Host.Value + "/";
@@ -65,7 +80,7 @@ namespace Banana.Web.Controllers
             }
             
             return View();
-        }
+        }        
         public async Task<IActionResult> ApplyCoupon(CartDto cartDto)
         { 
             ResponseDto response = await _cartService.ApplyCoupon(cartDto);
@@ -117,9 +132,9 @@ namespace Banana.Web.Controllers
                 {
                     CartDto cartDto = JsonConvert.DeserializeObject<CartDto>(Convert.ToString(response.Result));
                     return cartDto;
-                }
+                }  
             }
             return new CartDto();
-        }
+        } 
     }
 }
