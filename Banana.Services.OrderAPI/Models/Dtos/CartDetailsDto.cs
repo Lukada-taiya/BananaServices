@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace Banana.Services.OrderAPI.Models.Dtos { 
+namespace Banana.Services.OrderAPI.Models.Dtos
+{
     public class CartDetailsDto
     { 
         public int? CartDetailsId { get; set; }

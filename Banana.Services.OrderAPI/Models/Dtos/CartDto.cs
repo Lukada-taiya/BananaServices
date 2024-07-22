@@ -1,5 +1,4 @@
 ﻿namespace Banana.Services.OrderAPI.Models.Dtos
-
 {
     public class CartDto
     {
