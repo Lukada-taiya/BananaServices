@@ -11,9 +11,9 @@ namespace Banana.Services.OrderAPI
             CreateMap<OrderHeaderDto,CartHeaderDto>()
                 .ForMember(dest => dest.CartTotal, u => u.MapFrom(src => src.OrderTotal)).ReverseMap();
             CreateMap<CartDetailsDto, OrderDetailsDto>()
-                .ForMember(dest => dest.ProductName, u => u.MapFrom(src => src.ProductDto.Name));
-            CreateMap<CartDetailsDto, OrderDetailsDto>()
-                .ForMember(dest => dest.Price, u => u.MapFrom(src => src.ProductDto.Price));
+                .ForMember(dest => dest.ProductName, u => u.MapFrom(src => src.ProductDto.Name))
+                .ForMember(dest => dest.Price, u => u.MapFrom(src => src.ProductDto.Price))
+                .ReverseMap(); 
             CreateMap<OrderDetailsDto, CartDetailsDto>();
             CreateMap<OrderHeaderDto, OrderHeader>().ReverseMap();
             CreateMap<OrderDetails, OrderDetailsDto>().ReverseMap(); 

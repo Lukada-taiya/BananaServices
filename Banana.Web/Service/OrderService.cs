@@ -14,9 +14,28 @@ namespace Banana.Web.Service
             {
                 ApiType = ApiType.POST,
                 Data = cartDto,
-                Url = CouponApiBase+"/api/order"
+                Url = OrderApiBase + "/api/order/CreateOrder"
             });
-        } 
-    
+        }
+
+        public async Task<ResponseDto> CreateStripeSession(StripeRequestDto stripeRequestDto)
+        {
+            return await _service.SendAsync(new RequestDto()
+            {
+                ApiType = ApiType.POST,
+                Data = stripeRequestDto,
+                Url = OrderApiBase + "/api/order/CreateStripeSession"
+            });
+        }
+
+        public async Task<ResponseDto> ValidateStripeSession(int orderHeaderId)
+        {
+            return await _service.SendAsync(new RequestDto()
+            {
+                ApiType = ApiType.POST,
+                Data = orderHeaderId,
+                Url = OrderApiBase + "/api/order/ValidateStripeSession"
+            });
+        }
     }
 }

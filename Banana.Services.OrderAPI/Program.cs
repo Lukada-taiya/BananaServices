@@ -9,6 +9,8 @@ using Banana.Services.OrderAPI.Utility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Stripe;
+using ProductService = Banana.Services.OrderAPI.Services.ProductService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +25,7 @@ var mapperConfig = new MapperConfiguration(mc =>
 });
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<BackendApiAuthTokenHandler>();
-builder.Services.AddHttpClient("Products", u => u.BaseAddress = new Uri(builder.Configuration["ServiceUrls:Product"])).AddHttpMessageHandler<BackendApiAuthTokenHandler>(); 
+builder.Services.AddHttpClient("Products", u => u.BaseAddress = new Uri(builder.Configuration["ServiceUrls:Product"])).AddHttpMessageHandler<BackendApiAuthTokenHandler>();
 
 IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
@@ -56,6 +58,7 @@ builder.Services.AddSwaggerGen(opt => {
     });
 });
 
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
 builder.AddAppAuth();
 builder.Services.AddAuthorization();
 

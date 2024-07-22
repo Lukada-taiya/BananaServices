@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using Banana.Services.CouponAPI.Data;
-using Banana.Services.CouponAPI.Models;
+using Banana.Services.CouponAPI.Data; 
 using Banana.Services.CouponAPI.Models.Dto;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization; 
+using Microsoft.AspNetCore.Mvc; 
+using Stripe;
+using Coupon = Banana.Services.CouponAPI.Models.Coupon;
 
 namespace Banana.Services.CouponAPI.Controllers
 {
@@ -71,6 +71,16 @@ namespace Banana.Services.CouponAPI.Controllers
                 Coupon coupon = _mapper.Map<Coupon>(couponDto);
                 _context.Coupons.Add(coupon);
                 _context.SaveChanges();
+
+                var options = new CouponCreateOptions
+                {
+                    AmountOff = (long)(couponDto.DiscountAmount * 100),
+                    Name = couponDto.CouponCode,
+                    Currency = "usd",
+                    Id = couponDto.CouponCode
+                };
+                var service = new CouponService();
+                service.Create(options);
             }catch(Exception ex)
             {
                 _response.Message = ex.Message;
@@ -104,7 +114,11 @@ namespace Banana.Services.CouponAPI.Controllers
                 Coupon coupon = _context.Coupons.First(x => x.CouponId == id);
                 _context.Coupons.Remove(coupon);
                 _context.SaveChanges();
-            }catch(Exception ex)
+
+                var service = new CouponService();
+                service.Delete(coupon.CouponCode);
+            }
+            catch(Exception ex)
             {
                 _response.Message = ex.Message;
                 _response.IsSuccess = false;
