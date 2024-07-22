@@ -26,7 +26,7 @@ namespace Banana.Web.Controllers
         [HttpPost] 
         public async Task<IActionResult> Checkout(CartDto cartDto)
         { 
-            CartDto cart = await GetCartOfLoggedInUser();
+            var cart = await GetCartOfLoggedInUser();
             cart.CartHeader.Email = cartDto.CartHeader.Email;
             cart.CartHeader.Phone = cartDto.CartHeader.Phone;
             cart.CartHeader.Name = cartDto.CartHeader.Name;
@@ -34,11 +34,24 @@ namespace Banana.Web.Controllers
             var res = await _orderService.CreateOrderAsync(cart);
 
             OrderHeaderDto order = JsonConvert.DeserializeObject<OrderHeaderDto>(Convert.ToString(res.Result)); 
-            if(res != null && res.IsSuccess)
+            if (res != null && res.IsSuccess)
             {
+                var domain = Request.Scheme + "://" + Request.Host.Value + "/";
+
                 //get stripe session
+                StripeRequestDto stripeRequestDto = new()
+                {
+                    ApprovedUrl = domain + "cart/Confirmation?orderId=" + order.OrderHeaderId,
+                    CancelUrl = domain + "cart/checkout",
+                    OrderHeader = order
+                };
+
+                var stripeRequestResponse = await _orderService.CreateStripeSession(stripeRequestDto);
+                StripeRequestDto response = JsonConvert.DeserializeObject<StripeRequestDto>(Convert.ToString(stripeRequestResponse.Result));
+                Response.Headers.Add("Location", response.StripeSessionUrl);
+                return new StatusCodeResult(303);
             }
-            return View(cart);
+            return View(cartDto);
         }
         public async Task<IActionResult> Remove(int CartDetailsId)
         {
