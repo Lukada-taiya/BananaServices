@@ -113,4 +113,31 @@ namespace Banana.Services.OrderAPI.Controllers
             return _responseDto;
         }
 
+        [Authorize]
+        [HttpPost("ValidateStripeSession")]
+        public async Task<ResponseDto> ValidateStripeSession([FromBody] int OrderHeaderId)
+        {
+            try
+            {
+                OrderHeader orderHeader = _context.OrderHeaders.First(u => u.OrderHeaderId == OrderHeaderId);
+                var service = new SessionService();
+                Session session = service.Get(orderHeader.StripeSessionId);
+                var paymentIntentService = new PaymentIntentService();
+                PaymentIntent paymentIntent = paymentIntentService.Get(session.PaymentIntentId);
+                if(paymentIntent.Status == "succeeded")
+                {
+                    orderHeader.PaymentIntentId = paymentIntent.Id;
+                    orderHeader.Status = SD.Status_Approved;
+                    _context.SaveChanges();
+                    _responseDto.Result = _mapper.Map<OrderHeaderDto>(orderHeader);
+                } 
+            }
+            catch (Exception e)
+            {
+                _responseDto.Message = e.Message;
+                _responseDto.IsSuccess = false;
+            }
+            return _responseDto;
+        }
+    }
 }
