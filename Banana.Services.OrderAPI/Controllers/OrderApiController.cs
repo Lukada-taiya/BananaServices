@@ -49,5 +49,68 @@ namespace Banana.Services.OrderAPI.Controllers
             }
             return _responseDto;
         }
+
+        [Authorize]
+        [HttpPost("CreateStripeSession")]
+        public async Task<ResponseDto> CreateStripeSession([FromBody] StripeRequestDto stripeRequestDto)
+        {
+            try
+            {
+
+                var options = new SessionCreateOptions
+                {
+                    SuccessUrl = stripeRequestDto.ApprovedUrl,
+                    CancelUrl = stripeRequestDto.CancelUrl,
+                    LineItems = new List<SessionLineItemOptions>(),
+                    Mode = "payment"
+                };
+
+
+
+                var Discounts = new List<SessionDiscountOptions>
+            {
+                new SessionDiscountOptions
+                {
+                    Coupon = stripeRequestDto.OrderHeader.CouponCode
     }
+            }; 
+
+                foreach(var item in stripeRequestDto.OrderHeader.OrderDetails)
+                {
+                    var sessionLineItem = new SessionLineItemOptions
+                    {
+                        PriceData = new SessionLineItemPriceDataOptions
+                        {
+                            UnitAmount = (long)(item.Price * 100), //20.99 -> 2099
+                            Currency = "usd",
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
+                                Name = item.ProductDto.Name,
+
+                            }
+                        },
+                        Quantity = item.Count
+                    };
+                    options.LineItems.Add(sessionLineItem);
+                }
+                if (stripeRequestDto.OrderHeader.Discount > 0)
+                {
+                    options.Discounts = Discounts;
+                }
+                var service = new SessionService();
+                Session session = service.Create(options);
+                stripeRequestDto.StripeSessionUrl = session.Url;
+                OrderHeader orderHeader = _context.OrderHeaders.First(u => u.OrderHeaderId == stripeRequestDto.OrderHeader.OrderHeaderId);
+                orderHeader.StripeSessionId = session.Id;
+                _context.SaveChanges();
+                _responseDto.Result = stripeRequestDto;
+            }
+            catch (Exception e)
+            {
+                _responseDto.Message = e.Message;
+                _responseDto.IsSuccess=false;
+            }
+            return _responseDto;
+        }
+
 }
