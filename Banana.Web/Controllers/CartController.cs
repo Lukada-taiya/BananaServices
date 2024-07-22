@@ -109,7 +109,7 @@ namespace Banana.Web.Controllers
 
         private async Task<CartDto> GetCartOfLoggedInUser()
         {
-            var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub).FirstOrDefault()?.Value;
+            var userId = User.Claims.Where(u => u.Type == JwtRegisteredClaimNames.Sub)?.FirstOrDefault()?.Value;
             if(userId != null)
             {
                 ResponseDto response = await _cartService.GetCartByUserId(userId);
