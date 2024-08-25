@@ -2,8 +2,7 @@
 Banana.Web/bin/
  Banana.Web/obj/
 /Banana.Services.AuthApi/bin/Debug/net8.0/cs/Microsoft.CodeAnalysis.CSharp.resources.dll
-*.dll
-*.json
+*.dll 
 *.exe
 *.pdb
 *.props
